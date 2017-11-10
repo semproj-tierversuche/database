@@ -1,0 +1,14 @@
+{
+"PMID":25620913,
+"Title":"Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.",
+"Abstract":"Neurons rely on action potentials, or spikes, to encode information. But spikes can encode different stimulus features in different neurons. We show here through simulations and experiments how neurons encode the integral or derivative of their input based on the distinct tuning properties conferred upon them by subthreshold currents. Slow-activating subthreshold inward (depolarizing) current mediates positive feedback control of subthreshold voltage, sustaining depolarization and allowing the neuron to spike on the basis of its integrated stimulus waveform. Slow-activating subthreshold outward (hyperpolarizing) current mediates negative feedback control of subthreshold voltage, truncating depolarization and forcing the neuron to spike on the basis of its differentiated stimulus waveform. Depending on its direction, slow-activating subthreshold current cooperates or competes with fast-activating inward current during spike initiation. This explanation predicts that sensitivity to the rate of change of stimulus intensity differs qualitatively between integrators and differentiators. This was confirmed experimentally in spinal sensory neurons that naturally behave as specialized integrators or differentiators. Predicted sensitivity to different stimulus features was confirmed by covariance analysis. Integration and differentiation, which are themselves inverse operations, are thus shown to be implemented by the slow feedback mediated by oppositely directed subthreshold currents expressed in different neurons.",
+"Metadata": {
+	"Author": ["Ratté S1", "Lankarany M2", "Rho YA3", "Patterson A4", "Prescott SA1."],
+	"Publishing date": "2015 Jan 9;8:452",
+	"Journal": [],
+	"Link to Pubmed": "https://www.ncbi.nlm.nih.gov/pubmed/25620913",
+	"Keywords": ["action potential", "coincidence detector", "differentiator", "integrator", "neural coding", "spike"],
+},
+"Identifyer":["ITest1","ITest2","ITest3"],
+"Annotations":["ATest1","ATest2","ATest3"]
+}
