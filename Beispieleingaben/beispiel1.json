@@ -9,4 +9,7 @@
 	"Keywords": ["action potential", "coincidence detector", "differentiator", "integrator", "neural coding", "spike"],
 	"Identifier": ["ITest1","ITest2","ITest3"],
 	"Annotations": ["ATest1","ATest2","ATest3"]
+	"suggest": {
+        	"input": [ "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input." ]
+    	}
 }
