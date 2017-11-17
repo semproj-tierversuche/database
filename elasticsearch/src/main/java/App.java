@@ -59,19 +59,56 @@ public class App implements Serializable {
 
 
 
-            Object obj = parser.parse(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
-            JSONObject jsonObject = (JSONObject) obj;
+            //Object obj = parser.parse(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
+            //JSONObject jsonObject = (JSONObject) obj;
             //String name = (String) jsonObject.get("Title");
 
             //createDataWithBulk(bulkProcessor, jsonObject);
 
 
-            JsonObject jsonObjectresult = searchDocumentByPMID(client, 25620913);
+            JsonObject jsonObjectPMIDresult = searchDocumentByPMID(client, 25620913);
+            Gson pMIDgson = new GsonBuilder().setPrettyPrinting().create();
+            String pMIDGsonString = pMIDgson.toJson(jsonObjectPMIDresult);
+            System.out.println("By PMID " + pMIDGsonString);
+
+
+            String title =
+                    "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.";
+            JsonObject jsonObjectresult = searchDocumentByTitle(client, title);
+            Gson titlegson = new GsonBuilder().setPrettyPrinting().create();
+            String titleGsonString = titlegson.toJson(jsonObjectresult);
+            System.out.println("By Title " + titleGsonString);
+
+
+
             System.out.println("Finish!");
 
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    private static JsonObject searchDocumentByTitle(TransportClient client, String title) {
+
+        try {
+            QueryBuilder qb = termQuery("Title", title);
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("pubmed").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+                    .get();
+
+            Map map = null;
+
+            for (SearchHit hit : antwort.getHits()) {
+
+                map = hit.getSource();
+                Gson gson = new Gson();
+                return gson.toJsonTree(map).getAsJsonObject();
+            }
+
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
     private static JsonObject searchDocumentByPMID(TransportClient client, int PMID) {
@@ -84,8 +121,8 @@ public class App implements Serializable {
             Map map = null;
 
             for (SearchHit hit : antwort.getHits()) {
-                map = hit.getSource();
 
+                map = hit.getSource();
                 Gson gson = new Gson();
                 return gson.toJsonTree(map).getAsJsonObject();
             }
