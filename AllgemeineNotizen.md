@@ -3,7 +3,6 @@
 
 - [Semesterprojekt Notizen](#semesterprojekt-notizen)
 	- [1 Allgemeine Informationen](#1-allgemeine-informationen)
-		- [Termine](#termine)
 		- [1.1 Email-Verteiler](#11-email-verteiler)
 		- [1.2 Github](#12-github)
 		- [1.3 Trello](#13-trello)
@@ -13,23 +12,14 @@
 		- [2.1 Go3R – Semantic Internet Search Engine for Alternative Methods to Animal Testing](#21-go3r-semantic-internet-search-engine-for-alternative-methods-to-animal-testing)
 		- [2.2 Experiences from Developing the Domain-Specific Entity Search Engine GeneView](#22-experiences-from-developing-the-domain-specific-entity-search-engine-geneview)
 	- [3 Technologien](#3-technologien)
-	- [4 Fragen zu User Stories?](#4-fragen-zu-user-stories)
-		- [4.1 Suche?](#41-suche)
-		- [4.2 Replacement Publikationen](#42-replacement-publikationen)
-		- [4.3 Metadaten von Publikationen](#43-metadaten-von-publikationen)
-		- [4.4 Erweiterbarkeit für neue Ressourcen-Quellen](#44-erweiterbarkeit-für-neue-ressourcen-quellen)
-		- [4.5 Filtern für die Output-Liste](#45-filtern-für-die-output-liste)
-		- [4.6 Grund für Ähnlichkeit](#46-grund-für-ähnlichkeit)
-		- [4.7 Grund für keine Alternativmethode](#47-grund-für-keine-alternativmethode)
-		- [4.8 Log-Information der Benutzer](#48-log-information-der-benutzer)
+	- [4 Datenbankschema](#4-datenbankschema)
+	- [5 Tomcat Kram](#5-tomcat-kram)
+		- [5.1 Weitere Schritte](#51-weitere-schritte)
 
 <!-- /TOC -->
 
 
 ##1 Allgemeine Informationen
-
-###Termine
-* 03.11.2017 BfR
 
 ###1.1 Email-Verteiler
 * intern:
@@ -125,16 +115,27 @@
   - Suggest(Dient zu Autocompletion)
   - Abstract - String[] (Wegen strukturierter Abstracts)
   - Publikationstype - String
-	- Substances - String[]
-	- Mesh-Terms - String[]
-	- Textmining Version - String
-	- 3R Feld?
-
+  - Substances - String[]
+  - Mesh-Terms - String[]
+  - Textmining Version - String
+  - 3R Feld?
 
 * 2. Schema:
   - PMID - Integer
   - FullText - String
 
 
-##5Fragen????
-* Was bedeutet Ähnlichkeit über Annotations, Schlagwörter, Substanzen????
+##5 Tomcat Kram
+* deployment:
+	- kopieren von .war:
+		- sudo cp ~/Dropbox/Die\ Höhle\ des\ Löwen/Uni/5.\ Semester/Semesterprojekt/gitrepo/database/elasticsearch/target/esapi.war /var/lib/tomcat8/webapps      
+	- tomcat starten:
+		- sudo systemctl start tomcat8.service
+
+###5.1 Weitere Schritte
+* Besprechung mit Middleware:
+	- Server konfigurieren, Localhost?!?!
+	- unsere Schnittstellen/Pfade
+	- Fehlermeldung
+	- Handlung bei createDocument, wenn Dokument bereits vorhanden ist
+	- bulk Methode: Wenn mehrere JSON Files gleichzeitig indexiert werden sollen
