@@ -31,8 +31,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 public class App implements Serializable {
 
-    public static HashMap<Integer, Record> checkBulkMap = new <Integer, Record>HashMap();
-    public static HashMap<Integer, Integer> result = new <Integer, Integer>HashMap();
+
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -61,7 +60,7 @@ public class App implements Serializable {
 
             //Object obj = parser.parse(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
             //JSONObject jsonObject = (JSONObject) obj;
-            //String name = (String) jsonObject.get("Title");
+            //String name = (String) jsonObject.get("Title");2
 
             //createDataWithBulk(bulkProcessor, jsonObject);
 
