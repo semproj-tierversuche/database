@@ -8,8 +8,8 @@ curl -XPUT 'localhost:9200/twitter?pretty' -H 'Content-Type: application/json' -
 {
     "settings" : {
         "index" : {
-            "number_of_shards" : 3, 
-            "number_of_replicas" : 2 
+            "number_of_shards" : 3,
+            "number_of_replicas" : 2
         }
     }
 }
@@ -24,5 +24,5 @@ curl -XPUT 'localhost:9200/twitter?pretty' -H 'Content-Type: application/json' -
 Verwendung eines tomcat8 Webservers
 Deployment:
 
-1. kopieren der **esapi.war** nach **/var/lib/tomcat8/webapps**
-2. tomcat8 Server starten **sudo systemctl start tomcat8.service** 
+1. kopieren der ```esapi.war``` nach ```/var/lib/tomcat8/webapps```
+2. tomcat8 Server starten ```sudo systemctl start tomcat8.service``` 
