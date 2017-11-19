@@ -16,5 +16,5 @@ curl -XPUT 'localhost:9200/twitter?pretty' -H 'Content-Type: application/json' -
 '
 ```
 
-1. dann muss der Pfad zu dem JSON File innerhalb des Programms gesetzt werden
+2. dann muss der Pfad zu dem JSON File innerhalb des Programms gesetzt werden
 
