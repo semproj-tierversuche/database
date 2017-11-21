@@ -1,4 +1,4 @@
-#Semesterprojekt Notizen
+# Semesterprojekt Notizen
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Semesterprojekt Notizen](#semesterprojekt-notizen)
@@ -19,30 +19,30 @@
 <!-- /TOC -->
 
 
-##1 Allgemeine Informationen
+## 1 Allgemeine Informationen
 
-###1.1 Email-Verteiler
+### 1.1 Email-Verteiler
 * intern:
   - informatik_sp_tierversuche@lists.hu-berlin.de
 * extern:
   - informatik_sp_tierversuche_extern@lists.hu-berlin.de
 
-###1.2 Github
+### 1.2 Github
 * https://github.com/semproj-tierversuche
 
-###1.3 Trello
+### 1.3 Trello
 * https://trello.com/b/O0TRy3w9/alternativmethoden-zu-tierversuchen
 
-###1.4 Slack
+### 1.4 Slack
 *
 
-###1.5 Scrum
+### 1.5 Scrum
 * alle 2 Wochen ein neuer Sprint
   - 1.Sprint: 10.11.2017
 
 ## 2 Paper Notizen
 
-###2.1 Go3R – Semantic Internet Search Engine for Alternative Methods to Animal Testing
+### 2.1 Go3R – Semantic Internet Search Engine for Alternative Methods to Animal Testing
 
 * 3Rs Prinzip:
   - Replacement (Vermeidung)
@@ -70,7 +70,7 @@
   - 13/16 Methoden wurden somit präsentiert
 
 
-###2.2 Experiences from Developing the Domain-Specific Entity Search Engine GeneView
+### 2.2 Experiences from Developing the Domain-Specific Entity Search Engine GeneView
 * GeneView - Such Engine um wissenschaftliche Dokumente zu durchsuchen, dabei wird auch der Text analysiert
   - zwischen verschiedenen Kategorien kann unterschieden werden
   - und mehrere Relation können präsentiert werden
@@ -88,14 +88,14 @@
 * es existiert Identifiyer Table um nach genau einem Thema nachzuschlagen
 * Lucene kann nicht per Default nach extrahierten Informationen suchen!
 
-##3 Technologien
+## 3 Technologien
 * ElasticSearch zur Indexierung und Speicherung der Daten/Metadaten(JSON)
 * Dokumente gesondert in Datenbank speichern
 * GSON
 * Levensthein-Distanz
 
 
-##4 Datenbankschema
+## 4 Datenbankschema
 
 * Index: Articles
 * 1. Type: Article
@@ -125,14 +125,15 @@
   - FullText - String
 
 
-##5 Tomcat Kram
+## 5 Tomcat Kram
 * deployment:
+	- mvn install
 	- kopieren von .war:
 		- sudo cp ~/Dropbox/Die\ Höhle\ des\ Löwen/Uni/5.\ Semester/Semesterprojekt/gitrepo/database/elasticsearch/target/esapi.war /var/lib/tomcat8/webapps      
 	- tomcat starten:
-		- sudo systemctl start tomcat8.service
+		- sudo systemctl start/restart tomcat8.service
 
-###5.1 Weitere Schritte
+### 5.1 Weitere Schritte
 * Besprechung mit Middleware:
 	- Server konfigurieren, Localhost?!?!
 	- unsere Schnittstellen/Pfade

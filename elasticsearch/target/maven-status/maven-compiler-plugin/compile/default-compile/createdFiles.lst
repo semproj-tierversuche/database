@@ -1,10 +1,11 @@
 de/mohammed/client/TestClient.class
 App.class
+de/mohammed/service/ImportService$2.class
 de/mohammed/client/ClientImportService.class
 de/mohammed/service/ImportService$1.class
+de/mohammed/ServerApp.class
 de/mohammed/service/ImportService.class
-ReferenceDocument.class
-Record.class
+de/mohammed/client/ClientQueryService.class
 de/mohammed/service/TestService.class
 App$1.class
 de/mohammed/service/TestApplication.class

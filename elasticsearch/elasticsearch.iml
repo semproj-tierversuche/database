@@ -66,7 +66,6 @@
     <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.9" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:jna:4.4.0-1" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch.plugin:transport-netty3-client:5.6.3" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty:3.10.6.Final" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch.plugin:transport-netty4-client:5.6.3" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.13.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.13.Final" level="project" />
@@ -86,8 +85,8 @@
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.9.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.2" level="project" />
-    <orderEntry type="library" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-servlet-initializer:3.1.4.Final" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.resteasy:resteasy-servlet-initializer:3.1.4.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:1.0.1.Beta1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-jaxrs:3.1.4.Final" level="project" />
@@ -108,5 +107,7 @@
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.12" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jsr173_api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-client:3.1.4.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.resteasy:resteasy-netty:3.1.4.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty:3.10.6.Final" level="project" />
   </component>
 </module>

@@ -142,35 +142,4 @@ public class App implements Serializable {
         }
     }
 
-
-
-    //parallel query durchführen
-    private static void searchCandidatesInES(TransportClient client, Record record) {
-
-        try {
-
-            List<Integer> prefixTokenList = new ArrayList<Integer>(Arrays.asList(record.prefixTokens));
-
-
-            QueryBuilder qb = QueryBuilders.boolQuery().must(QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PrefixTokens", prefixTokenList))).must(QueryBuilders.rangeQuery("R_ID").gt(record.getRid()));
-
-            SearchResponse antwort = client.prepareSearch("db").setTypes("test").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
-                    .get();
-
-            Map map = null;
-            //int iii = 0;
-            for (SearchHit hit : antwort.getHits()) {
-                map = hit.getSource();
-
-                Gson converter = new Gson();
-                Type type = new TypeToken<List<Integer>>() {
-                }.getType();
-                List<Integer> iList = converter.fromJson(map.get("Tokens").toString(), type);
-                Integer[] iArray = iList.toArray(new Integer[0]);
-
-            }
-        } catch (Exception e) {
-
-        }
-    }
 }

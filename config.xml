@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- Auskommentierte Sachen sind nein "nett zu haben, aber brauchen wir eigentlich nicht //-->
+<config>
+	<services>
+		<textmining>
+			<cmd>String</cmd>
+			<param key="String">String</param>
+			<version key="String">String</version>
+		</textmining>
+		<database>
+			<host protokoll="http" port="8081">String</host>
+			<store methode="put/" username="String" password="String">
+				<param key="String">type</param>
+				<cookie type="stroage">String</cookie>
+				<cookie type="string">String</cookie>
+				<header name="String">String</header>
+				<path>/import/</path>
+			</store>
+			<version methode="get/" username="String" password="String">
+				<param key="String">utilsname</param>
+				<path>/query/version</path>
+			</version>
+			<query methode="get/" username="String" password="String">
+				<param key="String">type</param>
+				<param key="String">utilsName</param>
+				<param key="String">PMID</param>
+				<param key="String">docTitle</param>
+				<cookie type="stroage">String</param>
+				<cookie type="string">String</param>
+				<header name="String">String</header>
+				<path>/query/</path>
+			</query>
+			<update methode="put/" username="String" password="String">
+				<param key="String">type</param>
+				<cookie type="stroage">String</cookie>
+				<cookie type="string">String</cookie>
+				<header name="String">String</header>
+				<path>/import/</path>
+			</update>
+			<delete methode="put/" username="String" password="String">
+				<param key="String">String</param>
+				<param key="String">String</param>
+				<cookie type="stroage">String</cookie>
+				<cookie type="string">String</cookie>
+				<header name="String">String</header>
+				<path>String</path>
+			</delete>
+		</database>
+	</services>
+	<limitations>
+		<threads>Interger</threads>
+		<cache>Integer</cache>
+	</limitations>
+	<resourceCollection>
+		<resource domain="Address" plugin="stream" xlstTransformation="XLSTFile" md5Check="md5Check">
+			<subFolder onInitializion="onInitializion">./pubmed/baseline/</subFolder>
+			<subFolder>./pubmed/updatefiles/</subFolder>
+				<includeFiles flag="endswith">String</includeFiles>
+				<!-- <includeFiles flag="contains"></includeFiles>
+				<includeFiles flag="pattern"></includeFiles>
+				<includeFiles flag="start_date"></includeFiles>
+				<includeFiles flag="end_date"></includeFiles>
+				<includeFiles flag="date"></includeFiles>//-->
+			<excludeFiles flag="endswith">String</excludeFiles>
+			<!-- <excludeFiles flag="contains"></excludeFiles>
+				<excludeFiles flag="pattern"></excludeFiles>
+				<excludeFiles flag="start_date"></excludeFiles>
+				<excludeFiles flag="end_date"></excludeFiles>
+				<excludeFiles flag="end_date"></excludeFiles> //-->
+		</resource>
+	</resourceCollection>
+</config>
