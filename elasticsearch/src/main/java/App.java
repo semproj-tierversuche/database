@@ -1,7 +1,9 @@
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.elasticsearch.action.bulk.*;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -58,26 +60,25 @@ public class App implements Serializable {
 
 
 
-            //Object obj = parser.parse(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
-            //JSONObject jsonObject = (JSONObject) obj;
-            //String name = (String) jsonObject.get("Title");2
+            Object obj = parser.parse(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
+            JSONObject jsonObject = (JSONObject) obj;
+            String name = (String) jsonObject.get("Title");
 
-            //createDataWithBulk(bulkProcessor, jsonObject);
-
+            DeleteResponse response = client.prepareDelete("semesterprojekt", "pubmed", "25620913").get();
+            bulkProcessor.add(new IndexRequest("semesterprojekt", "pubmed", "25620913").source(jsonObject));
 
             JsonObject jsonObjectPMIDresult = searchDocumentByPMID(client, 25620913);
             Gson pMIDgson = new GsonBuilder().setPrettyPrinting().create();
             String pMIDGsonString = pMIDgson.toJson(jsonObjectPMIDresult);
             System.out.println("By PMID " + pMIDGsonString);
 
-
-            String title =
-                    "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.";
-            JsonObject jsonObjectresult = searchDocumentByTitle(client, title);
-            Gson titlegson = new GsonBuilder().setPrettyPrinting().create();
-            String titleGsonString = titlegson.toJson(jsonObjectresult);
-            System.out.println("By Title " + titleGsonString);
-
+//
+//            String title =
+//                    "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.";
+//            JsonObject jsonObjectresult = searchDocumentByTitle(client, title);
+//            Gson titlegson = new GsonBuilder().setPrettyPrinting().create();
+//            String titleGsonString = titlegson.toJson(jsonObjectresult);
+//            System.out.println("By Title " + titleGsonString);
 
 
             System.out.println("Finish!");
@@ -87,28 +88,6 @@ public class App implements Serializable {
         }
     }
 
-
-    private static JsonObject searchDocumentByTitle(TransportClient client, String title) {
-
-        try {
-            QueryBuilder qb = termQuery("Title", title);
-            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("pubmed").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
-                    .get();
-
-            Map map = null;
-
-            for (SearchHit hit : antwort.getHits()) {
-
-                map = hit.getSource();
-                Gson gson = new Gson();
-                return gson.toJsonTree(map).getAsJsonObject();
-            }
-
-        } catch (Exception e) {
-
-        }
-        return null;
-    }
 
     private static JsonObject searchDocumentByPMID(TransportClient client, int PMID) {
 
@@ -130,16 +109,6 @@ public class App implements Serializable {
 
         }
         return null;
-    }
-
-
-    //searchible Feld definieren
-    private static void createDataWithBulk(BulkProcessor bulkRequest, JSONObject jsonObject) throws IOException {
-        try {
-            bulkRequest.add(new IndexRequest("semesterprojekt", "pubmed").source(jsonObject));
-        } catch (Exception e) {
-
-        }
     }
 
 }

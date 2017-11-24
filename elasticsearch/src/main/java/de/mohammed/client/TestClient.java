@@ -16,7 +16,7 @@ public class TestClient {
         Client client = ClientBuilder.newClient();
 
         // client.register(new LoggingFilter());
-        WebTarget target = client.target("http://localhost:8081/documents");
+        WebTarget target = client.target("http://localhost:8081/import");
         ResteasyWebTarget rtarget = (ResteasyWebTarget)target;
         ClientImportService importService=rtarget.proxy(ClientImportService.class);
         BufferedReader fileReader = new BufferedReader(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
@@ -25,18 +25,18 @@ public class TestClient {
         while ((line=fileReader.readLine())!=null) {
             tBuilder.append(line).append(System.lineSeparator());
         }
-//        Response document = importService.parseImport("document", tBuilder.toString());
-//        System.out.println(document);
+        Response document = importService.parseImport("document", tBuilder.toString());
+        //System.out.println(document);
 
 
         // client.register(new LoggingFilter());
-        target = client.target("http://localhost:8081/query");
-        rtarget = (ResteasyWebTarget)target;
-        ClientQueryService queryService=rtarget.proxy(ClientQueryService.class);
-        Response response = queryService.parseQuery("document", null, 25620913, null);
+//        target = client.target("http://localhost:8081/query");
+//        rtarget = (ResteasyWebTarget)target;
+//        ClientQueryService queryService=rtarget.proxy(ClientQueryService.class);
+//        Response response = queryService.parseQuery("document", null, 25620913, null);
 
 
-        System.out.println(response.readEntity(String.class));
+       // System.out.println(response.readEntity(String.class));
     }
 
 }

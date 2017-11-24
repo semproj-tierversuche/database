@@ -30,6 +30,7 @@ public class QueryService {
 
         if ("document".equals(type)) {
             if (pMID != -1) {
+                System.out.println("test");
                 return getDocumentByID(pMID);
             } else {
                 return getDocumentByTitle(title);
@@ -70,10 +71,8 @@ public class QueryService {
             return Response.status(404).entity("Not Found "+ utilsname).build();
 
         }else{
-
+            return Response.status(404).entity("No DB version ").build();
         }
-
-        return Response.status(404).entity("No DB version ").build();
     }
 
 
@@ -83,7 +82,7 @@ public class QueryService {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
             QueryBuilder qb = termQuery("PMID", pMID);
-            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("pubmed").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
 
             Map map = null;

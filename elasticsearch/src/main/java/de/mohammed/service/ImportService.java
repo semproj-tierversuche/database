@@ -77,13 +77,13 @@ public class ImportService {
 
             //bevor ein Dokument indexiert wird, wird geprüft ob es bereits vorhanden ist. Falls ja, wird es erstmal gelöscht
             QueryBuilder qb = termQuery("PMID", jsonDocument.get("PMID"));
-            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("pubmed").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
             if(antwort.getHits() != null){
-                DeleteResponse response = client.prepareDelete("semesterprojekt", "pubmed", jsonDocument.get("PMID").toString()).get();
+                DeleteResponse response = client.prepareDelete("semesterprojekt", "document", jsonDocument.get("PMID").toString()).get();
             }
 
-            bulkProcessor.add(new IndexRequest("semesterprojekt", "pubmed").source(jsonDocument));
+            bulkProcessor.add(new IndexRequest("semesterprojekt", "document", jsonDocument.get("PMID").toString()).source(jsonDocument));
 
         } catch (Exception e) {
 
@@ -128,7 +128,7 @@ public class ImportService {
                 DeleteResponse response = client.prepareDelete("semesterprojekt", "utils", jsonDocument.get("ResourceName").toString()).get();
             }
 
-            bulkProcessor.add(new IndexRequest("semesterprojekt", "utils").source(jsonDocument));
+            bulkProcessor.add(new IndexRequest("semesterprojekt", "utils", jsonDocument.get("ResourceName").toString()).source(jsonDocument));
 
         } catch (Exception e) {
 
