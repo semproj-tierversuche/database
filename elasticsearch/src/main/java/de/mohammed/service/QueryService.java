@@ -1,6 +1,7 @@
 package de.mohammed.service;
 
 import com.google.gson.Gson;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
@@ -108,7 +109,8 @@ public class QueryService {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
             QueryBuilder qb = termQuery("ResourceName", utilsname);
-            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("utils").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("utils")
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
 
             Map map = null;
@@ -131,4 +133,43 @@ public class QueryService {
     public Response getDocumentByTitle(String title) {
         return null;
     }
+
+    public Response deleteDocumentByID(int pMID) {
+
+        try {
+            TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).
+                    addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+
+            //QueryBuilder qb = termQuery("PMID", pMID);
+
+            DeleteResponse response = client.prepareDelete("semesterprojekt", "document", Integer.toString(pMID)).get();
+        } catch (Exception e) {
+
+            return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
+        }
+
+        return Response.status(200).entity("ok").build();
+    }
+
+    public Response deleteDocumentByTitle(String title) {
+
+        try {
+            TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).
+                    addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+
+            QueryBuilder qb = termQuery("title", title);
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("documents")
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+                    .get();
+
+
+
+        } catch (Exception e) {
+
+            return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
+        }
+
+        return Response.status(200).entity("ok").build();
+    }
+
 }
