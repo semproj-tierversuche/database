@@ -140,3 +140,12 @@
 	- Fehlermeldung
 	- Handlung bei createDocument, wenn Dokument bereits vorhanden ist
 	- bulk Methode: Wenn mehrere JSON Files gleichzeitig indexiert werden sollen
+
+	
+## 6 ElasticSearch
+* Ein Verfahren, um die gespeicherten Daten im Browser anschauen:
+	- man kann im Browser das Folgende eingeben (formatierte Ausgabe): http://localhost:9200/index/type/_id?pretty
+	- nicht formatierte Ausgabe: http://localhost:9200/index/type/_id
+	- hier ist ein Beispiel für index "customer", type "doc" und _id "1": http://localhost:9200/customer/doc/1?pretty
+	- die Portnummer von "localhost" ist von Benutzer eingestellt, muss nicht unbedingt "9200" sein
+	- Vorrige Information wurde erstmal (28.11.2017) von Olja vorgestellt und aufgrund Seds Anfrage veröffentlicht
