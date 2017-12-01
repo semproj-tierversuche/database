@@ -15,7 +15,7 @@
 	- [4 Datenbankschema](#4-datenbankschema)
 	- [5 Tomcat Kram](#5-tomcat-kram)
 		- [5.1 Weitere Schritte](#51-weitere-schritte)
-	- [6 ElasticSearch] (#6-elasticsearch)
+	- [6 ElasticSearch](#6-elasticsearch)
 
 <!-- /TOC -->
 
