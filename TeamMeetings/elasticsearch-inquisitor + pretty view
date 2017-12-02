@@ -1,0 +1,6 @@
+https://github.com/polyfractal/elasticsearch-inquisitor/blob/master/README.textile
+
+This plugin was written because “relevant result” problems are extremely common. Relevance scoring is affected by query composition, mapping details and the documents inside your index. This makes it difficult for third-parties to help diagnose without a complete recreation of the search environment.
+
+
+pretty view: semesterprojekt/_search?pretty
