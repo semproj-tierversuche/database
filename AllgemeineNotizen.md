@@ -1,4 +1,5 @@
 # Semesterprojekt Notizen
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Semesterprojekt Notizen](#semesterprojekt-notizen)
@@ -13,9 +14,10 @@
 		- [2.2 Experiences from Developing the Domain-Specific Entity Search Engine GeneView](#22-experiences-from-developing-the-domain-specific-entity-search-engine-geneview)
 	- [3 Technologien](#3-technologien)
 	- [4 Datenbankschema](#4-datenbankschema)
-	- [5 Tomcat Kram](#5-tomcat-kram)
-		- [5.1 Weitere Schritte](#51-weitere-schritte)
-	- [6 ElasticSearch](#6-elasticsearch)
+	- [5 Ähnlichkeitssuche](#5-ähnlichkeitssuche)
+	- [6 Tomcat Ansatz (nicht mehr aktuell!)](#6-tomcat-ansatz-nicht-mehr-aktuell)
+	- [7 Netty Ansatz](#7-netty-ansatz)
+	- [7 ElasticSearch](#7-elasticsearch)
 
 <!-- /TOC -->
 
@@ -125,8 +127,20 @@
   - PMID - Integer
   - FullText - String
 
+## 5 Ähnlichkeitssuche
 
-## 5 Tomcat Kram
+* zwei-stufige Suche
+  - zunächst ähnliche Dokumente finden
+  - dann aus dieser Ergebnismenge die relevanten filtern
+    - 1. Liste an relevanten Wörtern von Daniel vergleichen mit den Annotations (Liste bis Freitag)  -> Levensthein Distanz mit match-query
+    - 2. Common-Terms Query über die Abstracts
+    - 3. Annotations mit Annotations vergleichen (min should match noch unbekannt) -> Levensthein Distanz
+    - (4. Mesh Terms)
+    - (5. Keywords)
+    - (6. Substances)
+
+
+## 6 Tomcat Ansatz (nicht mehr aktuell!)
 * deployment:
 	- mvn install
 	- kopieren von .war:
@@ -134,16 +148,26 @@
 	- tomcat starten:
 		- sudo systemctl start/restart tomcat8.service
 
-### 5.1 Weitere Schritte
-* Besprechung mit Middleware:
-	- Server konfigurieren, Localhost?!?!
-	- unsere Schnittstellen/Pfade
-	- Fehlermeldung
-	- Handlung bei createDocument, wenn Dokument bereits vorhanden ist
-	- bulk Methode: Wenn mehrere JSON Files gleichzeitig indexiert werden sollen
+## 7 Netty Ansatz
 
-	
-## 6 ElasticSearch
+* 1. Maven dependencies laden, wenn nicht bereits getan
+	```
+	mvn install
+	```
+
+* 2. elasticsearch server starten
+
+```
+	./bin/elasticseach
+```
+
+* 3. ServerApp.java starten (startet den Netty Server)
+* 4. innerhalb des Projekts befindet siche in Testclient um die einzelnen servieces zu testen, hier die Pfade für die Testeingaben anpassen
+
+
+
+
+## 7 ElasticSearch
 * Ein Verfahren, um die gespeicherten Daten im Browser anschauen:
 	- man kann im Browser das Folgende eingeben (formatierte Ausgabe): http://localhost:9200/index/type/_id?pretty
 	- nicht formatierte Ausgabe: http://localhost:9200/index/type/_id
