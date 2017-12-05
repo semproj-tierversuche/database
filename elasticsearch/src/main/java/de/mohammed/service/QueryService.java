@@ -8,6 +8,9 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
@@ -17,6 +20,7 @@ import java.net.InetAddress;
 import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.reindex.DeleteByQueryAction.*;
 
 @Path("/query")
 public class QueryService {
@@ -141,8 +145,7 @@ public class QueryService {
                     addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
             //QueryBuilder qb = termQuery("PMID", pMID);
-
-            DeleteResponse response = client.prepareDelete("semesterprojekt", "document", Integer.toString(pMID)).get();
+            client.prepareDelete("semesterprojekt", "document", Integer.toString(pMID)).get();
         } catch (Exception e) {
 
             return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
@@ -157,12 +160,10 @@ public class QueryService {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).
                     addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
-            QueryBuilder qb = termQuery("title", title);
-            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("documents")
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            INSTANCE.newRequestBuilder(client)
+                    .filter(QueryBuilders.matchQuery("title", title))
+                    .source("semesterprojekt")
                     .get();
-
-
 
         } catch (Exception e) {
 

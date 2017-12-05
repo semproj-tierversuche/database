@@ -19,7 +19,7 @@ public class TestClient {
         WebTarget target = client.target("http://localhost:8081/import");
         ResteasyWebTarget rtarget = (ResteasyWebTarget)target;
         ClientImportService importService=rtarget.proxy(ClientImportService.class);
-        BufferedReader fileReader = new BufferedReader(new FileReader("/home/yogamapple/Dropbox/Die Höhle des Löwen/Uni/5. Semester/Semesterprojekt/Beispieleingaben/beispiel1.json"));
+        BufferedReader fileReader = new BufferedReader(new FileReader("C:\\\\Users\\user\\Desktop\\Das Studium\\Das 05. Semester\\Semesterprojekt\\git\\database\\Beispieleingaben\\beispiel1.json"));
         StringBuilder tBuilder=new StringBuilder();
         String line=null;
         while ((line=fileReader.readLine())!=null) {
