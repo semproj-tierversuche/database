@@ -48,7 +48,6 @@ public class ImportService {
     }
 
 
-
     public Response createDocument(String document) {
 
         BulkProcessor bulkProcessor = null;

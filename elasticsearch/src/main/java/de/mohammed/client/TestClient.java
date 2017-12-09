@@ -29,11 +29,11 @@ public class TestClient {
         //System.out.println(document);
 
 
-        // client.register(new LoggingFilter());
-//        target = client.target("http://localhost:8081/query");
-//        rtarget = (ResteasyWebTarget)target;
-//        ClientQueryService queryService=rtarget.proxy(ClientQueryService.class);
-//        Response response = queryService.parseQuery("document", null, 25620913, null);
+         //client.register(new LoggingFilter());
+        target = client.target("http://localhost:8081/query");
+        rtarget = (ResteasyWebTarget)target;
+        ClientQueryService queryService=rtarget.proxy(ClientQueryService.class);
+        Response response = queryService.parseQuery("document", null, 25620913, null);
 
 
        // System.out.println(response.readEntity(String.class));

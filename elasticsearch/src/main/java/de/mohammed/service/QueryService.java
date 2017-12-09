@@ -1,6 +1,7 @@
 package de.mohammed.service;
 
 import com.google.gson.Gson;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
@@ -30,7 +31,6 @@ public class QueryService {
 
         if ("document".equals(type)) {
             if (pMID != -1) {
-                System.out.println("test");
                 return getDocumentByID(pMID);
             } else {
                 return getDocumentByTitle(title);
@@ -97,7 +97,6 @@ public class QueryService {
 
             return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
         }
-
         return Response.status(404).entity("Not Found "+ pMID).build();
     }
 
@@ -122,13 +121,34 @@ public class QueryService {
         } catch (Exception e) {
 
             return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
-
         }
 
         return Response.status(404).entity("Not Found "+ utilsname).build();
     }
 
+
+    @GET
+    @Path("/delete")
+    public Response deleteDocumentByID(@QueryParam("pMID")  @DefaultValue("-1") int pMID) {
+        try {
+            TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+            DeleteResponse response = client.prepareDelete("semesterprojekt", "document", Integer.toString(pMID)).get();
+
+            if(response != null){
+                return Response.status(200).entity("ok").build();
+
+            }else{
+                return Response.status(404).entity("Not Found "+ pMID).build();
+            }
+
+        } catch (Exception e) {
+
+            return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
+        }
+    }
+
     public Response getDocumentByTitle(String title) {
-        return null;
+
+        return Response.status(501).entity("not implemented").build();
     }
 }
