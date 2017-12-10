@@ -187,6 +187,86 @@ public class App implements Serializable {
         }
 
     }
+    private static ArrayList<JsonObject> searchInES(TransportClient client, int pMID ){
+        ArrayList<JsonObject> resultOfSearch = new ArrayList<JsonObject>();
+        ArrayList<String> idListOfMoreLikeThis = new ArrayList<String>();
+        try {
+            JsonObject jObject = searchDocumentByPMID(client, pMID);
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject) parser.parse(jObject.toString());
+            
+            ArrayList<String> meshTermsList = searchByMeshTerms(client, obj);
+            if(meshTermsList.isEmpty()){
+                return null;
+            }
+            idListOfMoreLikeThis = searchByMoreLikeThis(client, obj, meshTermsList);
+            resultOfSearch = searchByRelevanceList(client, idListOfMoreLikeThis);
+            return resultOfSearch;
+            
+        } catch (Exception e){
+            
+        }
+        
+        return null;
+    }
+    private static ArrayList<String> searchByMeshTerms(TransportClient client, JSONObject obj){
+        ArrayList<String> meshTerms = new ArrayList<String>(Arrays.asList(obj.get("MeshHeadings").toString().split(" , ")));
+        // Wenn das Feld "MeshHeading" in dem InputDocument leer ist, dann geben null zurück. Die Suche ist beendet.
+        if(meshTerms.isEmpty()) {
+            return null;
+        }
+        try {
+            //The Query funktioniert auch mit obj.get("MeshHeadings").
+            QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("30%");
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            .get();
+            // System.out.println("Results of searchByMeshTerms, hits: "+antwort.toString());
+            ArrayList<String> resultIds = new ArrayList<String>();
+            for (SearchHit hit : antwort.getHits()) {
+                resultIds.add(hit.getId().toString());
+            }
+            return resultIds;
+        } catch (Exception e){
+            
+        }
+        return null;
+    }
+    
+    private static ArrayList<String> searchByMoreLikeThis(TransportClient client, JSONObject obj, ArrayList<String> ids){
+        ArrayList<String> result = new ArrayList<String>();
+        try{
+            String[] field = {"Abstract"};
+            MoreLikeThisQueryBuilder.Item[] items = null;
+            String[] text = {obj.get("Abstract").toString()};
+            QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
+            .must(moreLikeThisQuery(field, text, items).minTermFreq(2).minDocFreq(1).maxQueryTerms(10).minimumShouldMatch("40%"));
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            .get();
+            
+            //System.out.println("Meldung aus MLT: "+ antwort.toString());
+            for(SearchHit hit : antwort.getHits()){
+                result.add(hit.getId());
+            }
+            //System.out.println("Result from more like this:" + result);
+            return result;
+            
+        } catch (Exception e){
+            
+        }
+        return null;
+    }
+    
+    private static ArrayList<JsonObject> searchByRelevanceList(TransportClient client, ArrayList<String> ids){
+        ArrayList<JsonObject> result =null;
+        try {
+            //Warten auf die Liste vom Daniel.
+            
+        } catch (Exception e){
+            
+        }
+        
+        return null;
+    }
 
     private static ArrayList<JsonObject> searchDocumentMLT(TransportClient client, int pMID){
 
@@ -246,7 +326,7 @@ public class App implements Serializable {
         }
 
         return null;
-    }
+    } */
 
     //searchible Feld definieren
     private static void createDataWithBulk(BulkProcessor bulkRequest, JSONObject jsonObject) throws IOException {
