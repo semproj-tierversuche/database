@@ -4,6 +4,8 @@ import org.elasticsearch.action.bulk.*;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.*;
+import org.elasticsearch.client.IndicesAdminClient;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.collect.HppcMaps;
 import org.elasticsearch.common.settings.Settings;
@@ -38,7 +40,8 @@ public class App implements Serializable {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        TransportClient client = null;
+
+        /* TransportClient client = null;
         BulkProcessor bulkProcessor = null;
         JSONParser parser = new JSONParser();
 
@@ -65,7 +68,7 @@ public class App implements Serializable {
             String pMIDGsonString = pMIDgson.toJson(jsonObjectPMIDresult);
             System.out.println("By PMID " + pMIDGsonString);*/
 
-            String title = "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.";
+            /* String title = "Subthreshold membrane currents confer distinct tuning properties that enable neurons to encode the integral or derivative of their input.";
            // deleteDocumentByTitle(client, title);
 
 
@@ -83,12 +86,13 @@ public class App implements Serializable {
             System.out.println("By Title " + titleGsonString);*/
 
 
-            System.out.println("Finish!");
+            /*System.out.println("Finish!");
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
+
 
 
     private static JsonObject searchDocumentByTitle(TransportClient client, String title) {
@@ -326,7 +330,7 @@ public class App implements Serializable {
         }
 
         return null;
-    } */
+    }
 
     //searchible Feld definieren
     private static void createDataWithBulk(BulkProcessor bulkRequest, JSONObject jsonObject) throws IOException {
@@ -338,4 +342,60 @@ public class App implements Serializable {
 
     }
 
+    private static void createType() { // creates 'type' and also 'index'. Nevertheless man can use commented part of
+                                        // code, which doesn't create index but puts mapping and creates Type.
+                                        // This method were tested and it works just fine. If there's any questions then
+                                        // feel free to ask, because there's no other documentation :)
+        try {
+            TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).
+                    addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+            IndicesAdminClient indicesAdminClient = client.admin().indices();
+            client.admin().indices().prepareCreate("testIndex")                 // 'testIndex' should be replaced by the wished name of index
+                    .addMapping("testType", "{\"properties\":{" +       // 'testType' should be adopted too
+                            "\"Abstract\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"AbstractContent\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Annotations\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Author\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Authors\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Date\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Identifier\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Journal\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Keywords\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Link\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"MeshHeadings\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"PMID\":{\"type\":\"long\"}," +
+                            "\"PublicationType\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Suggest\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"TextminingVersion\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Title\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"suggest\":{\"properties\":{\"input\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}}}}}"
+                    )
+                    .get();
+
+            /*client.admin().indices().preparePutMapping("testIndex") // 'testIndex' should be replaced by the wished name of index
+                    .setType("testType")  // 'testType' should be adopted as well (just pick some better name, for the god's sake!)
+                    .setSource("{\"properties\":{" +
+                            "\"Abstract\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"AbstractContent\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Annotations\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Author\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Authors\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Date\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Identifier\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Journal\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Keywords\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Link\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"MeshHeadings\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"PMID\":{\"type\":\"long\"}," +
+                            "\"PublicationType\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Suggest\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"TextminingVersion\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"Title\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}," +
+                            "\"suggest\":{\"properties\":{\"input\":{\"type\":\"text\",\"fields\":{\"keyword\":{\"type\":\"keyword\",\"ignore_above\":256}}}}}}}"
+                    )
+                    .get(); */
+        } catch (Exception e) {
+            System.out.println("Something went terribly wrong, my dear friend :\\");
+        }
+    }
 }
