@@ -214,11 +214,13 @@ public class App implements Serializable {
         return null;
     }
     private static ArrayList<String> searchByMeshTerms(TransportClient client, JSONObject obj){
-        ArrayList<String> meshTerms = new ArrayList<String>(Arrays.asList(obj.get("MeshHeadings").toString().split(" , ")));
         // Wenn das Feld "MeshHeading" in dem InputDocument leer ist, dann geben null zurück. Die Suche ist beendet.
         if(meshTerms.isEmpty()) {
+        if(obj.get("MeshHeadings") == null)
+        {
             return null;
         }
+        ArrayList<String> meshTerms = new ArrayList<String>(Arrays.asList(obj.get("MeshHeadings").toString().split(" , ")));
         try {
             //The Query funktioniert auch mit obj.get("MeshHeadings").
             QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("30%");
@@ -247,7 +249,6 @@ public class App implements Serializable {
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
             .get();
             
-            //System.out.println("Meldung aus MLT: "+ antwort.toString());
             for(SearchHit hit : antwort.getHits()){
                 result.add(hit.getId());
             }
@@ -261,15 +262,31 @@ public class App implements Serializable {
     }
     
     private static ArrayList<JsonObject> searchByRelevanceList(TransportClient client, ArrayList<String> ids){
-        ArrayList<JsonObject> result =null;
+        ArrayList<JsonObject> result = new ArrayList<JsonObject>();
         try {
-            //Warten auf die Liste vom Daniel.
+            GetResponse relevanceList  = client.prepareGet("relevance_list", "item_list", "1").get();
+            QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
+            .must(matchQuery("Abstract",relevanceList.getSource()).minimumShouldMatch("10%"));
+            // later: Annotations instead of Abstract and int 1 instead of "10%"
+            SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
+            .get();
+            Map map = null;
+            //String output = antwort.toString();
+            //System.out.println("OUPUT: " + output);
+            SearchHits hits = antwort.getHits();
+            for (SearchHit hit : hits) {
+                map = hit.getSource();
+                
+                return result;
+            }
             
         } catch (Exception e){
             
         }
         
         return null;
+    }
+
     }
 
     private static ArrayList<JsonObject> searchDocumentMLT(TransportClient client, int pMID){
