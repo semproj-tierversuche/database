@@ -283,17 +283,14 @@ public class QueryService {
 
         try {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-            GetResponse relevanceList  = client.prepareGet("relevance_list", "item_list", "1").get();
-            System.out.println("RelevanceList Source: "+ relevanceList.getSource());
+            GetResponse relevanceList  = client.prepareGet("semesterprojekt", "item_list", "1").get();
             QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
                     .must(matchQuery("Abstract",relevanceList.getSource()).minimumShouldMatch("10%"));
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
-            System.out.println("I'm here!!");
             Map map = null;
 
             String output = antwort.toString();
-            System.out.println("OUPUT: " + output);
             SearchHits hits = antwort.getHits();
             for (SearchHit hit : hits) {
                 map = hit.getSource();
