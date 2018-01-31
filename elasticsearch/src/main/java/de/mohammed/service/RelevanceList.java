@@ -25,6 +25,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 
 public class RelevanceList {
+    public static void main(String[] args){
 
         System.out.println(createRelevanceList("/Users/Desktop/projekt/list.txt"));
         //       System.out.println(deleteRelevanceList());

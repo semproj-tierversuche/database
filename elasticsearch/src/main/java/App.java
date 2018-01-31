@@ -215,7 +215,6 @@ public class App implements Serializable {
     }
     private static ArrayList<String> searchByMeshTerms(TransportClient client, JSONObject obj){
         // Wenn das Feld "MeshHeading" in dem InputDocument leer ist, dann geben null zurück. Die Suche ist beendet.
-        if(meshTerms.isEmpty()) {
         if(obj.get("MeshHeadings") == null)
         {
             return null;
@@ -252,7 +251,6 @@ public class App implements Serializable {
             for(SearchHit hit : antwort.getHits()){
                 result.add(hit.getId());
             }
-            //System.out.println("Result from more like this:" + result);
             return result;
             
         } catch (Exception e){
@@ -277,6 +275,8 @@ public class App implements Serializable {
             for (SearchHit hit : hits) {
                 map = hit.getSource();
                 
+                Gson gson = new Gson();
+                result.add(gson.toJsonTree(map).getAsJsonObject());
                 return result;
             }
             
