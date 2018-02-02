@@ -147,7 +147,7 @@ public class QueryService {
         try {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
-            QueryBuilder qb = matchQuery("docTitle", title);
+            QueryBuilder qb = matchQuery("Title", title);
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
 
@@ -192,7 +192,7 @@ public class QueryService {
         try {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
             JSONObject jsonDocument = null;
-            QueryBuilder qb = termQuery("docTitle", title);
+            QueryBuilder qb = termQuery("Title", title);
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
 
@@ -241,7 +241,7 @@ public class QueryService {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
             //The Query funktioniert auch mit obj.get("MeshHeadings").
-            QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("40%");
+            QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("30%");
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
             ArrayList<String> resultIds = new ArrayList<String>();
@@ -262,7 +262,7 @@ public class QueryService {
             MoreLikeThisQueryBuilder.Item[] items = null;
             String[] text = {obj.get("Abstract").toString()};
             QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
-                    .must(moreLikeThisQuery(field, text, items).minTermFreq(2).minDocFreq(1).maxQueryTerms(10).minimumShouldMatch("50%"));
+                    .must(moreLikeThisQuery(field, text, items).minTermFreq(2).minDocFreq(1).maxQueryTerms(20).minimumShouldMatch("40%"));
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
 
@@ -278,14 +278,13 @@ public class QueryService {
     }
 
     private static ArrayList<JsonObject> searchByRelevanceList(ArrayList<String> ids){
-        System.out.println("Ids:" + ids.size());
+        
         ArrayList<JsonObject> result = new ArrayList<JsonObject>();
-
         try {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
             GetResponse relevanceList  = client.prepareGet("semesterprojekt", "item_list", "1").get();
             QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
-                    .must(matchQuery("Abstract",relevanceList.getSource()).minimumShouldMatch("10%"));
+                    .must(matchQuery("Abstract",relevanceList.getSource().toString()).minimumShouldMatch("10%"));
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
             Map map = null;
@@ -294,11 +293,10 @@ public class QueryService {
             SearchHits hits = antwort.getHits();
             for (SearchHit hit : hits) {
                 map = hit.getSource();
-
                 Gson gson = new Gson();
                 result.add(gson.toJsonTree(map).getAsJsonObject());
-                return result;
             }
+                return result;
 
         } catch (Exception e){
 
