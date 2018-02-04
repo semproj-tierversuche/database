@@ -241,7 +241,7 @@ public class QueryService {
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
 
             //The Query funktioniert auch mit obj.get("MeshHeadings").
-            QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("30%");
+            QueryBuilder qb = matchQuery("MeshHeadings", meshTerms).minimumShouldMatch("1");
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
                     .get();
             ArrayList<String> resultIds = new ArrayList<String>();
@@ -258,9 +258,9 @@ public class QueryService {
         ArrayList<String> result = new ArrayList<String>();
         try{
             TransportClient client = new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
-            String[] field = {"Abstract"};
+            String[] field = {"Annotations"};
             MoreLikeThisQueryBuilder.Item[] items = null;
-            String[] text = {obj.get("Abstract").toString()};
+            String[] text = {obj.get("Annotations").toString()};
             QueryBuilder qb = QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("PMID",ids)).minimumShouldMatch(1)
                     .must(moreLikeThisQuery(field, text, items).minTermFreq(2).minDocFreq(1).maxQueryTerms(20).minimumShouldMatch("40%"));
             SearchResponse antwort = client.prepareSearch("semesterprojekt").setTypes("document").setSearchType(SearchType.DFS_QUERY_THEN_FETCH).setQuery(qb)                 // Query
