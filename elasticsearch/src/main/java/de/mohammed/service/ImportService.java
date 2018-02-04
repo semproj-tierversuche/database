@@ -190,7 +190,7 @@ public class ImportService {
                         .field("items", list)
                         .endObject();
 
-                IndexResponse response = client.prepareIndex("relevance_list", "item_list", "1")
+                IndexResponse response = client.prepareIndex("semesterprojekt", "item_list", "1")
                         .setSource(builder)
                         .get();
 
@@ -214,7 +214,7 @@ public class ImportService {
 
             } catch (ElasticsearchException exception) {
                 if (exception.status() == RestStatus.NOT_FOUND) {
-                    return Response.status(404).entity("Index relevanceList does not found in Elasticsearch.").build();
+                    return Response.status(404).entity("Relevance List  Not Found").build();
                 }
             }
 
@@ -223,6 +223,6 @@ public class ImportService {
             return Response.status(500).entity("Fehler in Elasticsearch: " + e).build();
         }
 
-        return Response.status(200).entity("The relevance List was deleted").build();
+        return Response.status(200).entity("The Relevance List Was Deleted").build();
     }
 }
